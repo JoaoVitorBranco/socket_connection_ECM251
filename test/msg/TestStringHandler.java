@@ -74,6 +74,24 @@ public class TestStringHandler {
     }
 
     @Test
+    @DisplayName("Testing {banana: 1, apple: 2, orange: 3, mango: 4, pineapple: 4 3 2 5}")
+    public void test9(){
+        String str = "{banana: 1, apple: 2, orange: 3, mango: 4, pineapple: 4 3 2 5}";
+        try{
+            HashMap<String, String> hashMap = StringHandler.stringToHashMap(str);
+            assertEquals(hashMap.size(), 5);
+            assertEquals(hashMap.get("banana"), "1");
+            assertEquals(hashMap.get("apple"), "2");
+            assertEquals(hashMap.get("orange"), "3");
+            assertEquals(hashMap.get("mango"), "4");
+            assertEquals(hashMap.get("pineapple"), "4 3 2 5");
+        }
+        catch (Exception e){
+            assertEquals(false, e.getMessage());
+        }
+    }
+
+    @Test
     @DisplayName("Testing error {banana: 1, apple: 2, orange: 3,}")
     public void test5(){
         String str = "{banana: 1, apple: 2, orange: 3,";

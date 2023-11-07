@@ -1,6 +1,6 @@
 package src.msg;
 public class MessageHandler{
-    public static Message stringToClass(String message){
-        return new Message("a", "b", "c");
+    public static Message stringToClass(String message) throws Exception{
+        return new Message(StringHandler.stringToHashMap(message));
     }
 }
