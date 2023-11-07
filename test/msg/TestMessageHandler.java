@@ -77,6 +77,27 @@ public class TestMessageHandler {
             assertEquals("Message must have a sender", e.getMessage());
         }
     }
+    
+    @Test
+    @DisplayName("Testing message to string to message")
+    public void test6(){
+        String target = "client1";
+        String content = "mensagem nova";
+        String sender = "client2";
 
+        Message startMessage = new Message(target, content, sender);
+
+        String str = startMessage.toString();
+
+        try{
+            Message finalMessage = MessageHandler.stringToClass(str);
+            assertEquals(finalMessage.getTarget(), target);
+            assertEquals(finalMessage.getContent(), content);
+            assertEquals(finalMessage.getSender(), sender);
+        }
+        catch (Exception e){
+            assertEquals(false, e.getMessage());
+        }
+    }
 
 }
