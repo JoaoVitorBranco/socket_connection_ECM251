@@ -31,7 +31,7 @@ public class Server {
         try{
             while((msg = clientSocket.getMessage()) != null){
                 if("sair".equalsIgnoreCase(msg)) return;
-                System.out.printf("<- Cliente %s: %s\n", clientSocket.getRemoteSocketAddress(), msg);
+                System.out.printf("<- Cliente %s: %s\n", clientSocket.address, msg);
                 sendMessasgeToAll(clientSocket, msg);
             }
         }
@@ -45,7 +45,7 @@ public class Server {
         while(iterator.hasNext()){
             ClientSocket clientSocket = iterator.next();
             if(!sender.equals(clientSocket)){
-                if(!clientSocket.sendMessage("Cliente " + sender.getRemoteSocketAddress() + " disse: " + msg)){
+                if(!clientSocket.sendMessage("Cliente " + sender.address + " disse: " + msg)){
                     iterator.remove();
                 }
             }

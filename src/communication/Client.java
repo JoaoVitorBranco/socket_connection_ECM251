@@ -2,8 +2,6 @@ package src.communication;
 import java.io.IOException;
 import java.net.Socket;
 
-import javax.swing.JTextArea;
-
 public class Client implements Runnable{
     private ClientSocket clientSocket;
 
@@ -29,7 +27,7 @@ public class Client implements Runnable{
         }
     }
 
-    public void sendMsg(String msg){
+    public void sendMessage(String msg){
         clientSocket.sendMessage(msg);
     }
 

@@ -9,16 +9,14 @@ public class ClientSocket{
     private final Socket socket;
     private final BufferedReader entrada;
     private final PrintWriter saida;
+    public String address;
 
     public ClientSocket(final Socket socket) throws IOException{
         this.socket = socket;
-        System.out.println("Conectado com " + socket.getRemoteSocketAddress() + "!");
+        this.address = socket.getRemoteSocketAddress().toString();
+        System.out.println("Conectado com " + this.address + "!");
         this.entrada = new BufferedReader(new InputStreamReader(socket.getInputStream()));
         this.saida = new PrintWriter(socket.getOutputStream(), true);
-    }
-
-    public String getRemoteSocketAddress(){
-        return socket.getRemoteSocketAddress().toString();
     }
 
     public void close(){
