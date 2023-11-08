@@ -23,9 +23,9 @@ public class Server {
         System.out.println("Aguardando conexões de clientes...");
         while (true){
             ClientSocket clientSocket = new ClientSocket(serverSocket.accept());
-            System.out.println("Estou no servidor, sendo que o cliente " + clientSocket.address + " foi conectado!");
-            clients.put(clientSocket.address, clientSocket);
-            sendMessage(clientSocket, new Message(clientSocket.address, clientSocket.address, "localhost"));
+            String newAddress = clientSocket.address.replace('/',' ').replace(':','/');
+            clients.put(newAddress, clientSocket);
+            sendMessage(clientSocket, new Message(newAddress, newAddress, "localhost"));
             new Thread(() -> clientMessageLoop(clientSocket)).start();
         }
     }
