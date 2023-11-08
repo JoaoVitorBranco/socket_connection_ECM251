@@ -1,14 +1,17 @@
 package src.communication;
 import java.io.IOException;
 import java.net.ServerSocket;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.LinkedList;
+
+import src.msg.Message;
 
 public class Server {
     public static final String ADDRESS = "127.0.0.1";
     public static final int PORT = 4000;
     private ServerSocket serverSocket;
-    private final LinkedList<ClientSocket> clients = new LinkedList<>();
+    private final HashMap<String, ClientSocket> clients = new HashMap<String, ClientSocket>();
 
     public void start() throws IOException {
         serverSocket = new ServerSocket(PORT);
@@ -20,10 +23,11 @@ public class Server {
         System.out.println("Aguardando conexões de clientes...");
         while (true){
             ClientSocket clientSocket = new ClientSocket(serverSocket.accept());
-            clients.add(clientSocket);
+            System.out.println("Estou no servidor, sendo que o cliente " + clientSocket.address + " foi conectado!");
+            clients.put(clientSocket.address, clientSocket);
+            sendMessage(clientSocket, new Message(clientSocket.address, clientSocket.address, "localhost"));
             new Thread(() -> clientMessageLoop(clientSocket)).start();
         }
-
     }
 
     public void clientMessageLoop(ClientSocket clientSocket){
@@ -41,15 +45,20 @@ public class Server {
     }
 
     private void sendMessasgeToAll(ClientSocket sender, String msg){
-        Iterator<ClientSocket> iterator = clients.iterator();
-        while(iterator.hasNext()){
-            ClientSocket clientSocket = iterator.next();
-            if(!sender.equals(clientSocket)){
-                if(!clientSocket.sendMessage("Cliente " + sender.address + " disse: " + msg)){
-                    iterator.remove();
-                }
-            }
-        }
+        // Iterator<ClientSocket> iterator = clients.iterator();
+        // while(iterator.hasNext()){
+        //     ClientSocket clientSocket = iterator.next();
+        //     if(!sender.equals(clientSocket)){
+        //         if(!clientSocket.sendMessage("Cliente " + sender.address + " disse: " + msg)){
+        //             iterator.remove();
+        //         }
+        //     }
+        // }
+    }
+
+    private void sendMessage(ClientSocket clientSocket, Message msg){
+        String msgString = msg.toString();
+        clientSocket.sendMessage(msgString);
     }
 
     public static void main(String[] args) {

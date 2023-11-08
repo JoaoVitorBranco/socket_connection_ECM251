@@ -2,6 +2,9 @@ package src.communication;
 import java.io.IOException;
 import java.net.Socket;
 
+import src.msg.Message;
+import src.msg.MessageHandler;
+
 public class Client implements Runnable{
     private ClientSocket clientSocket;
 
@@ -24,15 +27,31 @@ public class Client implements Runnable{
     public void run(){
         String msg;
         while((msg = clientSocket.getMessage()) != null){
+            try{
+                Message message = MessageHandler.stringToClass(msg);
+                if(message.getSender().equals("localhost")){
+                    clientSocket.address = message.getContent();
+                }
+                System.out.println(message.toString());
+            }
+            catch(Exception e){
+                System.out.println("Error in the message received: " + e.getMessage());
+                clientSocket.close();
+            }
         }
     }
 
-    public void sendMessage(String msg){
-        clientSocket.sendMessage(msg);
+    public void sendMessage(Message msg){
+        String msgString = msg.toString();
+        clientSocket.sendMessage(msgString);
     }
 
     public void close(){
         clientSocket.close();
+    }
+
+    public String getAddress(){
+        return clientSocket.address;
     }
 
 }
