@@ -3,6 +3,7 @@ package test.msg;
 
 import static org.junit.Assert.assertEquals;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 
 import org.junit.Test;
@@ -140,6 +141,63 @@ public class TestStringHandler {
         }
         catch (Exception e){
             assertEquals(e.getMessage(), "String must be in the format of {key:value, key:value}");
+        }
+    }
+
+    @Test
+    @DisplayName("Testing []")
+    public void test10(){
+        String str = "[]";
+        try{
+            ArrayList<String> arr = StringHandler.stringToArr(str);
+            assertEquals(arr.size(), 0);
+        }
+        catch (Exception e){
+            assertEquals(false, e.getMessage());
+        }
+    }
+    
+    @Test
+    @DisplayName("Testing [1]")
+    public void test11(){
+        String str = "[1]";
+        try{
+            ArrayList<String> arr = StringHandler.stringToArr(str);
+            assertEquals(arr.size(), 1);
+            assertEquals(arr.get(0), "1");
+        }
+        catch (Exception e){
+            assertEquals(false, e.getMessage());
+        }
+    }
+
+    @Test
+    @DisplayName("Testing [1, 2]")
+    public void test12(){
+        String str = "[1, 2]";
+        try{
+            ArrayList<String> arr = StringHandler.stringToArr(str);
+            assertEquals(arr.size(), 2);
+            assertEquals(arr.get(0), "1");
+            assertEquals(arr.get(1), "2");
+        }
+        catch (Exception e){
+            assertEquals(false, e.getMessage());
+        }
+    }
+
+    @Test
+    @DisplayName("Testing [192.168.0.25/4685, 192.168.0.42/192]")
+    public void test13(){
+        String str = "[192.168.0.25/4685, 192.168.0.42/192]";
+        try{
+            ArrayList<String> arr = StringHandler.stringToArr(str);
+            assertEquals(arr.size(), 2);
+            assertEquals(arr.get(0), "192.168.0.25/4685");
+            assertEquals(arr.get(1), "192.168.0.42/192");
+        }
+        catch (Exception e){
+            assertEquals(false, e.getMessage());
         }
     }
 }

@@ -51,9 +51,14 @@ public class Server {
                 switch (message.getTarget()) {
                     case "exit": // exit
                         return ;
+
                     case "broadcast": // broadcast
                         this.sendMessageToAll(clientSocket, message);
                         break;
+
+                    case "unicast":
+                        
+
                     default: // unicast
                         break;
                 }
@@ -68,11 +73,14 @@ public class Server {
 
     private void sendMessageToAll(ClientSocket sender, Message msg){
         for (String address : this.clients.keySet()) {
-            System.out.println("Address of sender: " + address + "\nAddress compared: " + msg.getSender());
             if(!address.equals(msg.getSender())){
                 sendMessage(this.clients.get(address), msg);
             }
         }
+    }
+
+    private void sendAddressesToSender(ClientSocket sender){
+        
     }
 
     private void sendMessage(ClientSocket clientSocket, Message msg){
