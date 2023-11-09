@@ -4,6 +4,7 @@ package test.msg;
 import static org.junit.Assert.assertEquals;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 
 import org.junit.Test;
@@ -195,6 +196,32 @@ public class TestStringHandler {
             assertEquals(arr.size(), 2);
             assertEquals(arr.get(0), "192.168.0.25/4685");
             assertEquals(arr.get(1), "192.168.0.42/192");
+        }
+        catch (Exception e){
+            assertEquals(false, e.getMessage());
+        }
+    }
+
+    @Test
+    @DisplayName("Testing ArrayList({})")
+    public void test14(){
+        ArrayList<String> arr = new ArrayList<String>();
+        try{
+            String str = StringHandler.arrToString(arr);
+            assertEquals(str, "[]");
+        }
+        catch (Exception e){
+            assertEquals(false, e.getMessage());
+        }
+    }
+
+    @Test
+    @DisplayName("Testing ArrayList({saveiro, gol, fusca, uno, celta})")
+    public void test15(){
+        ArrayList<String> arr = new ArrayList<String>(Arrays.asList("saveiro", "gol", "fusca", "uno", "celta"));
+        try{
+            String str = StringHandler.arrToString(arr);
+            assertEquals(str, "[saveiro, gol, fusca, uno, celta]");
         }
         catch (Exception e){
             assertEquals(false, e.getMessage());

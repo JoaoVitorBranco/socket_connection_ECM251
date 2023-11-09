@@ -49,4 +49,21 @@ public class StringHandler {
             throw new Exception("String must be in the format of [value, value, ...]");
         }
     }
+
+    public static String arrToString(ArrayList<String> arr) throws Exception{
+        try{
+            if(arr.size() == 0){
+                return "[]";
+            }
+            String str = "[";
+            for (String value : arr){
+                str += value + ", ";
+            }
+            str = str.substring(0, str.length()-2) + "]";
+            return str;
+        }
+        catch(Exception e){
+            throw new Exception("String must be in the format of [value, value, ...]");
+        }
+    }
 }

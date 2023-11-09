@@ -7,7 +7,4 @@ public class MessageHandler{
         return new Message(StringHandler.stringToHashMap(message));
     }
 
-    public static ArrayList<String> stringToArr(String message) throws Exception{
-        return StringHandler.stringToArr(message);
-    }
 }
