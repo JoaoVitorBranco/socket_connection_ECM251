@@ -23,7 +23,7 @@ public class StringHandler {
             }
         }
         catch(Exception e){
-            throw new Exception("String must be in the format of {key:value, key:value}");
+            throw new Exception("String must be in the format of {key:value, key:value}. The string is: " + str);
         }
     }
 
@@ -33,11 +33,11 @@ public class StringHandler {
                 return new ArrayList<String>();
             }
             else if(str.charAt(0) != '[' || str.charAt(str.length()-1) != ']'){
-                throw new Exception("String must be in the format of [value, value, ...]");
+                throw new Exception("String must be in the format of [value-value-...]");
             }
             else{
                 ArrayList<String> arr = new ArrayList<String>();
-                String[] values = str.substring(1, str.length()-1).split(",");
+                String[] values = str.substring(1, str.length()-1).split("-");
     
                 for (String value : values){
                     arr.add(value.trim());
@@ -46,7 +46,7 @@ public class StringHandler {
             }
         }
         catch(Exception e){
-            throw new Exception("String must be in the format of [value, value, ...]");
+            throw new Exception("String must be in the format of [value-value-...]");
         }
     }
 
@@ -57,13 +57,14 @@ public class StringHandler {
             }
             String str = "[";
             for (String value : arr){
-                str += value + ", ";
+                str += value + "-";
             }
-            str = str.substring(0, str.length()-2) + "]";
+            str = str.substring(0, str.length()-1) + "]";
             return str;
         }
         catch(Exception e){
-            throw new Exception("String must be in the format of [value, value, ...]");
+            throw new Exception("String must be in the format of [value-value-...]");
         }
     }
+
 }

@@ -41,6 +41,10 @@ public class ClientSocket{
         }
     }
 
+    public void setAddress(String address){
+        this.address = address;
+    }
+
     public boolean sendMessage(String msg){
         saida.println(msg);
         return !saida.checkError();

@@ -18,28 +18,31 @@ public class MainClient {
         }
 
         String op = "";
-        op = JOptionPane.showInputDialog("Type a operation (broadcast, unicast, exit): ");
+        String content = "...";
+        Message msg;
         do{
+            op = JOptionPane.showInputDialog("Type a operation (broadcast, unicast, exit): ");
+            client.canContinue();
             switch (op) {
                 case "broadcast":
-                    String content = JOptionPane.showInputDialog("Type a message: ");
-                    Message msg = new Message("broadcast", content, client.getAddress());
+                    content = JOptionPane.showInputDialog("Type a message: ");
+                    msg = new Message("broadcast", content, client.getAddress());
                     client.sendMessage(msg);
                     break;
 
                 case "unicast":
-                    
+                    client.unicastProtocolStart(); 
+                    msg = new Message("unicast", content, client.getAddress());
+                    client.sendMessage(msg);
                     break;
 
                 case "exit":
-                    
                     break;
 
                 default:
                     System.out.println("Invalid operation");
                     break;
             }
-            op = JOptionPane.showInputDialog("Type a operation (broadcast, unicast, exit): ");
 
         } while(!op.equals("exit"));
         client.close();

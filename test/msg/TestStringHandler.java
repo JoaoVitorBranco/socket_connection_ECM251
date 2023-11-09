@@ -102,7 +102,7 @@ public class TestStringHandler {
             assertEquals(false, true);
         }
         catch (Exception e){
-            assertEquals(e.getMessage(), "String must be in the format of {key:value, key:value}");
+            assertEquals(e.getMessage(), "String must be in the format of {key:value, key:value}. The string is: {banana: 1, apple: 2, orange: 3,");
         }
     }
 
@@ -115,7 +115,7 @@ public class TestStringHandler {
             assertEquals(false, true);
         }
         catch (Exception e){
-            assertEquals(e.getMessage(), "String must be in the format of {key:value, key:value}");
+            assertEquals(e.getMessage(), "String must be in the format of {key:value, key:value}. The string is: adoleta");
         }
     }
 
@@ -128,7 +128,7 @@ public class TestStringHandler {
             assertEquals(false, true);
         }
         catch (Exception e){
-            assertEquals(e.getMessage(), "String must be in the format of {key:value, key:value}");
+            assertEquals(e.getMessage(), "String must be in the format of {key:value, key:value}. The string is: {adoleta le peti peti pola}");
         }
     }
 
@@ -141,7 +141,7 @@ public class TestStringHandler {
             assertEquals(false, true);
         }
         catch (Exception e){
-            assertEquals(e.getMessage(), "String must be in the format of {key:value, key:value}");
+            assertEquals(e.getMessage(), "String must be in the format of {key:value, key:value}. The string is: {adoleta}");
         }
     }
 
@@ -173,9 +173,9 @@ public class TestStringHandler {
     }
 
     @Test
-    @DisplayName("Testing [1, 2]")
+    @DisplayName("Testing [1-2]")
     public void test12(){
-        String str = "[1, 2]";
+        String str = "[1-2]";
         try{
             ArrayList<String> arr = StringHandler.stringToArr(str);
             assertEquals(arr.size(), 2);
@@ -188,9 +188,9 @@ public class TestStringHandler {
     }
 
     @Test
-    @DisplayName("Testing [192.168.0.25/4685, 192.168.0.42/192]")
+    @DisplayName("Testing [192.168.0.25/4685-192.168.0.42/192]")
     public void test13(){
-        String str = "[192.168.0.25/4685, 192.168.0.42/192]";
+        String str = "[192.168.0.25/4685-192.168.0.42/192]";
         try{
             ArrayList<String> arr = StringHandler.stringToArr(str);
             assertEquals(arr.size(), 2);
@@ -221,7 +221,23 @@ public class TestStringHandler {
         ArrayList<String> arr = new ArrayList<String>(Arrays.asList("saveiro", "gol", "fusca", "uno", "celta"));
         try{
             String str = StringHandler.arrToString(arr);
-            assertEquals(str, "[saveiro, gol, fusca, uno, celta]");
+            assertEquals(str, "[saveiro-gol-fusca-uno-celta]");
+        }
+        catch (Exception e){
+            assertEquals(false, e.getMessage());
+        }
+    }
+
+    @Test
+    @DisplayName("Testing ArrayList to String to ArrayList")
+    public void test16(){
+        ArrayList<String> arr = new ArrayList<String>(Arrays.asList("127.0.0.1/55163", "127.0.0.1/55164"));
+        try{
+            String str = StringHandler.arrToString(arr);
+            ArrayList<String> arr2 = StringHandler.stringToArr(str);
+            assertEquals(arr2.size(), 2);
+            assertEquals(arr2.get(0), arr.get(0));
+            assertEquals(arr2.get(1), arr.get(1));
         }
         catch (Exception e){
             assertEquals(false, e.getMessage());

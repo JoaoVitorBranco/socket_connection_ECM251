@@ -1,10 +1,12 @@
 package src.communication;
 import java.io.IOException;
 import java.net.ServerSocket;
+import java.util.ArrayList;
 import java.util.HashMap;
 
 import src.msg.Message;
 import src.msg.MessageHandler;
+import src.msg.StringHandler;
 
 public class Server {
     public static final String ADDRESS = "127.0.0.1";
@@ -21,8 +23,10 @@ public class Server {
     public void clientConnectionLoop() throws Exception{
         System.out.println("Aguardando conexões de clientes...");
         while (true){
+            // Changing the address value in ClientSocket ServerSide and ClientSide
             ClientSocket clientSocket = new ClientSocket(serverSocket.accept());
             String newAddress = clientSocket.address.replace('/',' ').replace(':','/').trim();
+            clientSocket.setAddress(newAddress);
             clients.put(newAddress, clientSocket);
             sendMessage(clientSocket, new Message(newAddress, newAddress, "localhost"));
             
@@ -56,10 +60,15 @@ public class Server {
                         this.sendMessageToAll(clientSocket, message);
                         break;
 
-                    case "unicast":
-                        
+                    case "unicast": // unicast request of addresses
+                        this.sendAddressesToSender(clientSocket);
+                        break;
 
                     default: // unicast
+                        ClientSocket target = this.clients.get(message.getTarget());
+                        if(target != null){
+                            sendMessage(target, message);
+                        }
                         break;
                 }
                 if("sair".equalsIgnoreCase(msg)) return;
@@ -80,7 +89,23 @@ public class Server {
     }
 
     private void sendAddressesToSender(ClientSocket sender){
-        
+        ArrayList<String> addresses = new ArrayList<String>();
+        for (String string : clients.keySet()) {
+            if(!sender.address.equals(string)){
+                addresses.add(string);
+            }
+        }
+
+        String content = "";
+        try{
+            content = StringHandler.arrToString(addresses);
+        } catch (Exception e) {
+        }
+
+        Message msg = new Message(sender.address, content, "unicast");
+        System.out.println("Enviando os seguintes endereços para o cliente: " + content);
+        sendMessage(sender, msg);
+
     }
 
     private void sendMessage(ClientSocket clientSocket, Message msg){
