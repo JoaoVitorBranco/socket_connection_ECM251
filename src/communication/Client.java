@@ -35,7 +35,6 @@ public class Client implements Runnable{
             try{
                 Message message = MessageHandler.stringToClass(msg);
 
-                System.out.println("Message received (not unicast print): " + message.toString());
 
                 if(message.getSender().equals("localhost")){ // First communications that tells to the client what is his address
                     clientSocket.address = message.getContent();
@@ -43,7 +42,6 @@ public class Client implements Runnable{
                 }
                 else if(message.getSender().equals("unicast")){
                     // Have to ask the user the address of the client he wants to send a message
-                    System.out.println("Entrando no StringHandler.stringToArr");
                     ArrayList<String> addresses = StringHandler.stringToArr(message.getContent());
                     
                     if(addresses.size() == 0){ // Checking if this is the only client in the network
@@ -81,7 +79,7 @@ public class Client implements Runnable{
 
                 }   
                 else{
-                    // System.out.println("Message received from " + message.getSender() + ": " + message.getContent());
+                    System.out.println("Message received from " + message.getSender() + ": " + message.getContent());
                 }
             }
             catch(Exception e){
