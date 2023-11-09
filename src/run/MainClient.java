@@ -23,7 +23,7 @@ public class MainClient {
             switch (op) {
                 case "broadcast":
                     String content = JOptionPane.showInputDialog("Type a message: ");
-                    Message msg = new Message(client.getAddress(), content, "broadcast");
+                    Message msg = new Message("broadcast", content, client.getAddress());
                     client.sendMessage(msg);
                     break;
 

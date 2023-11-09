@@ -31,8 +31,11 @@ public class Client implements Runnable{
                 Message message = MessageHandler.stringToClass(msg);
                 if(message.getSender().equals("localhost")){
                     clientSocket.address = message.getContent();
+                    System.out.println("My address is " + clientSocket.address);
                 }
-                System.out.println(message.toString());
+                else{
+                    System.out.println("Message received from " + message.getSender() + ": " + message.getContent());
+                }
             }
             catch(Exception e){
                 System.out.println("Error in the message received: " + e.getMessage());
