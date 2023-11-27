@@ -3,48 +3,30 @@ package src.run;
 import java.io.IOException;
 
 import javax.swing.JOptionPane;
+import javax.swing.JTextArea;
 
 import src.communication.Client;
-import src.msg.Message;
+import src.window.ClientScreen;
 
 public class MainClient {
     public static void main(String[] args) {
+        JTextArea chatTextField = new JTextArea(20, 50);
+        chatTextField.setEditable(false);
         Client client = new Client();
+
         try{
-            client.start();
+            client.start(chatTextField);
         }
         catch (IOException err){
             JOptionPane.showMessageDialog(null, "Error in communication: " + err.getMessage());
         }
 
-        String op = "";
-        String content = "...";
-        Message msg;
-        do{
-            op = JOptionPane.showInputDialog("Type a operation (broadcast, unicast, exit): ");
-            client.canContinue();
-            switch (op) {
-                case "broadcast":
-                    content = JOptionPane.showInputDialog("Type a message: ");
-                    msg = new Message("broadcast", content, client.getAddress());
-                    client.sendMessage(msg);
-                    break;
-
-                case "unicast":
-                    client.unicastProtocolStart(); 
-                    msg = new Message("unicast", content, client.getAddress());
-                    client.sendMessage(msg);
-                    break;
-
-                case "exit":
-                    break;
-
-                default:
-                    System.out.println("Invalid operation");
-                    break;
-            }
-
-        } while(!op.equals("exit"));
-        client.close();
+        try{
+            Thread.sleep(500);
+        }
+        catch(Exception e){
+            System.out.println("Error in thread sleep: " + e.getMessage());
+        }
+        ClientScreen clientScreen = new ClientScreen(client, chatTextField);
     }
 }

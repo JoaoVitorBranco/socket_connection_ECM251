@@ -29,7 +29,7 @@ public class StringHandler {
 
     public static ArrayList<String> stringToArr(String str) throws Exception{
         try{
-            if(str.trim() == "[]"){
+            if(str.trim() == "[]" || str.trim() == "[ ]"){
                 return new ArrayList<String>();
             }
             else if(str.charAt(0) != '[' || str.charAt(str.length()-1) != ']'){

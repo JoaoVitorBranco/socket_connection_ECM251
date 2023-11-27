@@ -4,6 +4,7 @@ import java.net.Socket;
 import java.util.ArrayList;
 
 import javax.swing.JOptionPane;
+import javax.swing.JTextArea;
 
 import src.msg.Message;
 import src.msg.MessageHandler;
@@ -12,11 +13,14 @@ import src.msg.StringHandler;
 public class Client implements Runnable{
     private ClientSocket clientSocket;
     private boolean unicastProtocolRunning = false;
+    private JTextArea jtxt;
+    private String msgAux = "";
 
     public Client(){
     }
 
-    public void start() throws IOException{
+    public void start(JTextArea jtxt) throws IOException{
+        this.jtxt = jtxt;
         try{
             clientSocket = new ClientSocket(new Socket(Server.ADDRESS, Server.PORT));
             new Thread(this).start();
@@ -35,7 +39,6 @@ public class Client implements Runnable{
             try{
                 Message message = MessageHandler.stringToClass(msg);
 
-
                 if(message.getSender().equals("localhost")){ // First communications that tells to the client what is his address
                     clientSocket.address = message.getContent();
                     System.out.println("My address is " + clientSocket.address);
@@ -44,7 +47,7 @@ public class Client implements Runnable{
                     // Have to ask the user the address of the client he wants to send a message
                     ArrayList<String> addresses = StringHandler.stringToArr(message.getContent());
                     
-                    if(addresses.size() == 0){ // Checking if this is the only client in the network
+                    if(addresses.size() == 0 || message.getContent().equals("[]")){ // Checking if this is the only client in the network
                         JOptionPane.showMessageDialog(null, "There is no other client in the network to send a message.");
                         
                     }
@@ -67,7 +70,7 @@ public class Client implements Runnable{
                         String address = addresses.get(idx);
     
                         // Asking the user about the content
-                        String content = JOptionPane.showInputDialog("Type the content of the message you want to send to " + address + ":");
+                        String content = this.msgAux;
     
                         // Sending the message
                         Message msgToSend = new Message(address, content, clientSocket.address);
@@ -79,7 +82,9 @@ public class Client implements Runnable{
 
                 }   
                 else{
-                    System.out.println("Message received from " + message.getSender() + ": " + message.getContent());
+                    String fullLine = message.getSender() + ": " + message.getContent();
+                    System.out.println("Message received from " + fullLine);
+                    jtxt.setText(jtxt.getText() + "\n" + fullLine);
                 }
             }
             catch(Exception e){
@@ -92,6 +97,7 @@ public class Client implements Runnable{
     public void sendMessage(Message msg){
         String msgString = msg.toString();
         clientSocket.sendMessage(msgString);
+        this.msgAux = msg.getContent();
     }
 
     public void close(){

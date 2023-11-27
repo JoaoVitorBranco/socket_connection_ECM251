@@ -146,9 +146,9 @@ public class TestStringHandler {
     }
 
     @Test
-    @DisplayName("Testing []")
+    @DisplayName("Testing [ ]")
     public void test10(){
-        String str = "[]";
+        String str = "[ ]";
         try{
             ArrayList<String> arr = StringHandler.stringToArr(str);
             assertEquals(arr.size(), 0);

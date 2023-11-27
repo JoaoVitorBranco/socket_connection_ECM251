@@ -21,8 +21,8 @@ public class ClientSocket{
 
     public void close(){
         try{
-            entrada.close();
             saida.close();
+            entrada.close();
             socket.close();
         }
         catch(IOException e){

@@ -77,6 +77,7 @@ public class Server {
         }
         finally {
             clientSocket.close();
+            clients.remove(clientSocket.address);
         }
     }
 
